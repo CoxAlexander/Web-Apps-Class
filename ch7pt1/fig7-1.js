@@ -12,7 +12,7 @@ var server = http.createServer(function(req, res) {
   res.end();
 });
 // make the server listen on port 3000 (for example)
-server.listen(3000);
-console.log("\nThe server was started on port 3000\n");
+server.listen(3001);
+console.log("\nThe server was started on port 3001\n");
 console.log("You can make a request on:");
-console.log("http://localhost:3000");
+console.log("http://localhost:3001");
