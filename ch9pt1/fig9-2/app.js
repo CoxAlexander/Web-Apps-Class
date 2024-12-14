@@ -6,10 +6,14 @@ var logger = require('morgan');
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var mongoose = require("mongoose");
-mongoose.connect("mongodb://localhost/mydb_test");
+mongoose.connect("mongodb://localhost/mydb_test"); // we 
+                                                   // connect 
+                                                   // to 
+                                                   // mydb_test
 var listSchema = mongoose.Schema({
- text : String
+ text : String     // text associated with the list item
 });
+// association of the List model with the elements collection
 var List = mongoose.model("elements", listSchema);
 var app = express();
 // view engine setup
