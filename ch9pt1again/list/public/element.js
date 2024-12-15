@@ -6,24 +6,25 @@ const Element = {
   },
   template : `
     <li> 
-      <span v-if="!input"> {{text}} </span>
-      <input v-else type="text" :value="text" 
-       @blur="modify($event)" ref="refInput" />
+      <span v-if="!input"> {{element.text}} </span>
+      <input v-else type="text" :value="element.text" 
+       @blur="modify($event)" 
+                    ref="refInput" />
       <button @click="remove()"> Remove </button> 
       <button @click="input=true"> Modify </button>
     </li>
   `,
-  props : ["text", "index"],
+  props : ["element"],
   methods : {
     remove() {
       // process the click on the Remove button
-      this.$emit("remove", { index : this.index });
+      this.$emit("remove", { id : this.element._id });
     },
     modify(event) {
       var value = event.target.value;
       this.input = false;
-      this.$emit("modify", { index : this.index, value : 
-      value });
+      this.$emit("modify", { id : this.element._id, value : 
+        value });
     }
   },
   emits : ["remove", "modify"],

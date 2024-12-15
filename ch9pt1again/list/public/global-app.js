@@ -2,7 +2,8 @@ import Element from "./element.js";
 const GlobalApp = {
   data() {
     return {
-      elements : []
+      elements : []  // array of object { text, _id }
+                     // (_id = document id in MongoDB)
     }
   },
   components : {
@@ -12,25 +13,44 @@ const GlobalApp = {
     <button @click="add()">Add Element</button>
     <ul>
       <Element v-for="(element, index) in elements" 
-       :key="index" 
-        :text="element" :index="index"
+       :key="index" :element="element"
         @remove="remove($event)" @modify="modify($event)"
       />
     </ul>
   `,
   methods : {
     add() {
-      var element = "Element " + (this.elements.length + 1);
-      this.elements.push(element);
+      var text = "Element " + (this.elements.length + 1);
+      axios.post("/list", {text:text})     // pass object 
+                                           // {text:text} to 
+                                           // server
+      .then((response) => {
+        this.elements.push({text:text, 
+        _id:response.data.id});
+      });
     },
     remove(params) {
-      var index = params.index;
-      this.elements.splice(index, 1);
+      var id = params.id;
+      // remove the element with this id from the elements 
+      // array
+      this.elements = this.elements.filter(
+      function(element) {
+        if (element._id == id) return false;
+        else return true;
+      });
     },
     modify(params) {
-      var index = params.index;
+      var id = params.id;
       var value = params.value;
-      this.elements[index] = value;
+      // modify the text of the element with this id in the 
+      // elements array
+      this.elements = this.elements.map(function(element) {
+        if (element._id == id) {
+          element.text = value;
+          return element;
+        }
+        else return element;
+      });
     }
   }
 }
